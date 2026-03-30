@@ -21,23 +21,23 @@ A high-performance, lightweight matrix library implemented in C++ from scratch, 
 #include "Matrix.h"
 
 int main() {
-&nbsp;   // Create a 2x3 matrix and initialize with random weights
-&nbsp;   Matrix weights(2, 3);
-&nbsp;   weights.randomize(0.0, 1.0); // Mean 0, StdDev 1.0
+    // Create a 2x3 matrix and initialize with random weights
+    Matrix weights(2, 3);
+    weights.randomize(0.0, 1.0); // Mean 0, StdDev 1.0
 
-&nbsp;   // Create a 3x1 input vector (represented as a matrix)
-&nbsp;   Matrix input(3, 1, {0.5, -1.2, 0.8});
+    // Create a 3x1 input vector (represented as a matrix)
+    Matrix input(3, 1, {0.5, -1.2, 0.8});
 
-&nbsp;   // Forward pass: Z = W * X
-&nbsp;   Matrix output = weights * input;
+    // Forward pass: Z = W * X
+    Matrix output = weights * input;
 
-&nbsp;   // Apply ReLU activation function using the template map
-&nbsp;   Matrix activated = output.map([](double x) {
-&nbsp;       return x > 0 ? x : 0.0;
-&nbsp;   });
+    // Apply ReLU activation function using the template map
+    Matrix activated = output.map([](double x) {
+       return x > 0 ? x : 0.0;
+    });
 
-&nbsp;   std::cout << "Layer Output:" << std::endl;
-&nbsp;   activated.print();
+    std::cout << "Layer Output:" << std::endl;
+    activated.print();
 
-&nbsp;   return 0;
+    return 0;
 }
