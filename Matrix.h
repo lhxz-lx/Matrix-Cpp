@@ -7,7 +7,7 @@
 #include <functional>
 
 class Matrix{
-
+    
 private:
     // Flattened 1D storage for performance
     std::vector<double> data_;
@@ -43,6 +43,9 @@ public:
     // --- Basic Getters ---
     size_t rows() const {return rows_;}
     size_t cols() const {return cols_;}
+
+    // Total elements: return the total num of elements in the matrix
+    size_t size() const {return data_.size();}
 
     // --- Element Access Operators ---
 
@@ -84,6 +87,20 @@ public:
     // Subtraction: returns a new matrix as the difference of this and another matrix
     Matrix operator-(const Matrix& other) const;
 
+    // --- Compound Assignment Operations
+    
+    // in-place addition: adds another matrix directly to this one
+    Matrix& operator+=(const Matrix& other);
+
+    // in-place subtraction: subtracts another matrix directly from this one
+    Matrix& operator-=(const Matrix& other);
+
+    // in-place scalar multiplication: multiplies every elements by a constant natively
+    Matrix& operator*=(double scalar);
+
+    // in-place scalar division: divides every elements by a constant natively
+    Matrix& operator/=(double scalar);
+
     // --- Functional Operations ---
 
     // Map utility: applies a function to every element and returns a new matrix.
@@ -119,11 +136,15 @@ public:
 
     // Sum columns: collapses all columns into a single column vector (rows_ x 1)
     // Very useful for accumulating bias gradients across a batch of samples.
-    Matrix sum_cols() const;
+    Matrix sum_along_cols() const;
 
     // Argmax: returns the row index of the maximum value for each column.
     // Essential for evaluating model accuracy (finding the most likely class).
     std::vector<size_t> argmax() const;
 };
+
+// --- Non-member Operations--- 
+// Left-scalar multiplication: allows numbers * Matrix
+inline Matrix operator*(double scalar, const Matrix& rhs) {return rhs * scalar;}
 
 #endif
