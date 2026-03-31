@@ -43,6 +43,7 @@ public:
     // --- Basic Getters ---
     size_t rows() const {return rows_;}
     size_t cols() const {return cols_;}
+    bool empty() const {return data_.empty();}
 
     // Total elements: return the total num of elements in the matrix
     size_t size() const {return data_.size();}

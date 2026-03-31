@@ -140,8 +140,9 @@ Matrix Matrix::add_bias(const Matrix& bias) const {
     assert(bias.cols_ == 1 && bias.rows_ == rows_ && "Bias must be a column vector matching the rows of the matrix!");
     Matrix res(rows_, cols_);
     for(size_t i = 0; i < rows_; i++){
+        double b_val = bias(i, 0);
         for(size_t j = 0; j < cols_; j++){
-            res(i, j) = (*this)(i, j) + bias(i, 0);
+            res(i, j) = (*this)(i, j) + b_val;
         }
     }
     return res;
@@ -208,7 +209,7 @@ Matrix& Matrix::operator*=(double scalar){
 }
 
 Matrix& Matrix::operator/=(double scalar){
-    assert(scalar != 0 && "Division by zero!");
+    assert(scalar != 0.0 && "Division by zero!");
     size_t len = data_.size();
     for(size_t i = 0; i < len; i++){
         data_[i] /= scalar;
