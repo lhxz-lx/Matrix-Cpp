@@ -25,7 +25,7 @@ Matrix::Matrix(size_t rows, size_t cols, std::initializer_list<double> list) :
 void Matrix::print() const {
     for(size_t i = 0; i < rows_; i++){
         for(size_t j = 0; j < cols_; j++){
-            std::cout << std::setw(8) << std::setprecision(4) << (*this)(i, j) << ' ';
+            std::cout << std::fixed << std::setw(8) << std::setprecision(4) << (*this)(i, j) << ' ';
         }
         std::cout << '\n';
     }
@@ -127,6 +127,7 @@ Matrix Matrix::operator*(double scalar) const {
 
 Matrix Matrix::operator/(double scalar) const {
     // Relying on IEEE 754 standard for division by zero (results in inf or NaN)
+    assert(scalar != 0.0 && "Division by zero!");
     Matrix res(rows_, cols_);
     size_t len = data_.size();
     for(size_t i = 0; i < len; i++){
@@ -146,7 +147,7 @@ Matrix Matrix::add_bias(const Matrix& bias) const {
     return res;
 }
 
-Matrix Matrix::sum_cols() const {
+Matrix Matrix::sum_along_cols() const {
     // Returns a column vector (rows_ x 1)
     Matrix res(rows_, 1);
     for(size_t i = 0; i < rows_; i++){
@@ -178,4 +179,39 @@ std::vector<size_t> Matrix::argmax() const {
         res[j] = max_idx;
     }
     return res;
+}
+
+Matrix& Matrix::operator+=(const Matrix& other){
+    check_dimensions(other);
+    size_t len = data_.size();
+    for(size_t i = 0; i < len; i++){
+        data_[i] += other.data_[i];
+    }
+    return *this;
+}
+
+Matrix& Matrix::operator-=(const Matrix& other){
+    check_dimensions(other);
+    size_t len = data_.size();
+    for(size_t i = 0; i < len; i++){
+        data_[i] -= other.data_[i];
+    }
+    return *this;
+}
+
+Matrix& Matrix::operator*=(double scalar){
+    size_t len = data_.size();
+    for(size_t i = 0; i < len; i++){
+        data_[i] *= scalar;
+    }
+    return *this;
+}
+
+Matrix& Matrix::operator/=(double scalar){
+    assert(scalar != 0 && "Division by zero!");
+    size_t len = data_.size();
+    for(size_t i = 0; i < len; i++){
+        data_[i] /= scalar;
+    }
+    return *this;
 }
